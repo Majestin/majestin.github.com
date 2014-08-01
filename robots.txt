@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: http://Majestin.github.io/sitemap.xml
