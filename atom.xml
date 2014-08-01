@@ -4,7 +4,7 @@
   <title><![CDATA[당황하지 않고 후로그래밍.]]></title>
   <link href="http://Majestin.github.io/atom.xml" rel="self"/>
   <link href="http://Majestin.github.io/"/>
-  <updated>2014-08-01T12:38:14+09:00</updated>
+  <updated>2014-08-01T20:23:51+09:00</updated>
   <id>http://Majestin.github.io/</id>
   <author>
     <name><![CDATA[Majestin]]></name>
@@ -12,6 +12,137 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[SublimeText ShortKeys Memo]]></title>
+    <link href="http://Majestin.github.io/blog/2014/08/01/sublimetext-shortkeys-memo/"/>
+    <updated>2014-08-01T19:07:12+09:00</updated>
+    <id>http://Majestin.github.io/blog/2014/08/01/sublimetext-shortkeys-memo</id>
+    <content type="html"><![CDATA[<p>ToolCon2014 Sublime Text의 Tips and Tricks라는 <a href="http://youtube.com/watch?v=rjrXXONxOrI">영상</a>을 보고..</p>
+
+<h1 id="setting">Setting</h1>
+<hr />
+<p>1). iTerm에서 SublimeText 열기</p>
+
+<pre><code>$ ln -s "/Applications/Sublime\ Text\ 2.app/Contetns/SharedSupport/bin/subl" ~/bin/subl
+</code></pre>
+
+<p>2). 터미널에서 파일명을 <strong>⌘ + 클릭시</strong> 해당 앱으로 이동 가능</p>
+
+<p>3). Preference Setting이 JSON으로 되어있어 손쉽게 설정 가능.</p>
+
+<p>4). 단어 구분자
+한 단어를 구분할 기호를 설정
+CSS개발시 불편함 감소.</p>
+
+<pre><code>#io-footer {
+	margin-top: 25px;
+}
+</code></pre>
+
+<p>5). 마지막 빈 공백 삭제</p>
+
+<pre><code>"trim_automatic_white_space": true
+</code></pre>
+
+<p>6). EOF를 마지막 라인에 추가
+true로 변경시 저장시 마지막 라인에 EOF글자가 추가 됩니다.</p>
+
+<pre><code>"ensure_newline_at_eof_on_save": false
+</code></pre>
+
+<p>7). 포커스 잃을 때 자동 저장
+true로 변경시 탭을 이동할때 자동으로 저장됩니다.</p>
+
+<pre><code>"save_on_focus_lost": true
+</code></pre>
+
+<p>8). 들여쓰기 안내선</p>
+
+<p>draw_normal은 indent에 맞게 세로선이 보이고
+draw_active를 하면 현재 커서의 indent가 보입니다.</p>
+
+<pre><code>"indent_guide_options": ["draw_normal", "draw_active"]
+</code></pre>
+
+<h1 id="project">Project</h1>
+<hr />
+
+<p>1). 프로젝트 설정
+[Project] - [Save Project As]
+untitled.sublime-project
+untitled.sublime-workspace
+하나의 폴더 안에 저장하는 것이 좋음 </p>
+
+<p>2). 프로젝트 전환
+동시에 여러개 프로젝트 진행시 아래의 단축키로 이동 가능!
+오오미!</p>
+
+<pre><code>⌘ + Ctrl + p
+</code></pre>
+
+<h1 id="layout">Layout</h1>
+<hr />
+
+<p>1). 레이아웃 변경</p>
+
+<p>1개 </p>
+
+<pre><code>⌘ + alt + 1 
+</code></pre>
+
+<p>새로 2개 </p>
+
+<pre><code>⌘ + alt + 2
+</code></pre>
+
+<p>가로 2개  </p>
+
+<pre><code>⌘ + alt + shift + 2
+</code></pre>
+
+<p>2). 현재 탭 이동
+흠.. 마우스로 드래그 하지 않고 옮길 수 있음..</p>
+
+<pre><code>Ctrl + Shift + 숫자
+</code></pre>
+
+<h1 id="move">Move</h1>
+<hr />
+
+<p>코드 작성하고 다른 파일로 이동해야 할 상황이 생기는데 소스의 다른 위치로 이동하는 이야기 입니다.</p>
+
+<p><strong>Goto Anything</strong>
+파일명을 입력하면 관련 파일리스트가 나오고 선택하거나 엔터를 누르면 파일로 이동한다.
+Fuzzy 검색
+대충 기억나는 단어를 기억하면 가장 적합한 파일을 내어온다.</p>
+
+<pre><code>⌘ + p
+</code></pre>
+
+<p>1). @ 심볼로 찾기<br />
+SublimeText에서 자동으로 심볼이라고 판단하는 것들을 찾아준다.
+javascript에선 function 같은..</p>
+
+<p>2). : 라인번호 이동<br />
+콜론으로 찾으면 라인번호로 이동</p>
+
+<p>3). # Fuzzy 파일 내용에 대한 검색<br />
+현재 열려진 파일에 대한 변수명이나 텍스트같은 검색을 지원</p>
+
+<p>4). 연계해서 사용가능하다.<br />
+ex) jquery 50 -&gt; jquery파일의 50라인으로 이동</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[당황하지 않고 Swift #1]]></title>
+    <link href="http://Majestin.github.io/blog/2014/08/01/%E1%84%83%E1%85%A1%E1%86%BC%E1%84%92%E1%85%AA%E1%86%BC%E1%84%92%E1%85%A1%E1%84%8C%E1%85%B5%E1%84%8B%E1%85%A1%E1%86%AD%E1%84%80%E1%85%A9-swift-number-1/"/>
+    <updated>2014-08-01T14:23:15+09:00</updated>
+    <id>http://Majestin.github.io/blog/2014/08/01/당황하지않고-swift-number-1</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[test posting]]></title>
