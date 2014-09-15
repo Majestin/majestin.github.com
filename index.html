@@ -9,10 +9,7 @@
   <meta name="author" content="Majestin">
 
   
-  <meta name="description" content="SDK, NDK, ANT 받기 ADT - Android SDK ADT - NDK ANT 다운 bash_profile 변경
-1
-vi ~/.bash_profile
-편집 아래 내용으로 변경후 source 명령어로 bash_profile 실행 혹은 터미널 재시작 Add &hellip;">
+  <meta name="description" content="Installation Gemfile에 gem 'merit', gem 'ambry 추가 rails g merit:install 실행하여 마이그레이션 파일 생성 rails g merit MODEL_NAME 실행 (예. user). 해당 모델에 has_merit 추가와 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -69,6 +66,320 @@ vi ~/.bash_profile
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/11/merit-gem-example/">Merit Gem Example</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-11T18:39:22+09:00" pubdate data-updated="true">Sep 11<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/09/11/merit-gem-example/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1 id="installation">Installation</h1>
+
+<ol>
+  <li><code>Gemfile</code>에 <code>gem 'merit'</code>, <code>gem 'ambry</code> 추가</li>
+  <li><code>rails g merit:install</code> 실행하여 마이그레이션 파일 생성</li>
+  <li><code>rails g merit MODEL_NAME</code> 실행 (예. <code>user</code>). 해당 모델에 <code>has_merit</code> 추가와 마이그레이션을 생성</li>
+  <li><code>rake db:migrate</code> 실행</li>
+  <li>뱃지를 정의하기 위해 <code>config/initializers/merit.rb</code> 설정</li>
+  <li>규칙을 설정을 위해 <code>app/models/merit/*</code>의 파일들을 수정</li>
+</ol>
+
+<h1 id="badges">Badges</h1>
+
+<h2 id="creating-badges">Creating Badges</h2>
+
+<p><code>config/initializers/merit.rb</code>에서 뱃지를 생성합니다.</p>
+
+<p><code>Merit::Badge.create!</code> 배지 생성시 해시 값으로 이루어집니다:</p>
+
+<ul>
+  <li><code>:id</code> integer (required)</li>
+  <li><code>:name</code> this is how you reference the badge (required)</li>
+  <li><code>:level</code> (optional)</li>
+  <li><code>:description</code> (optional)</li>
+  <li><code>:custom_fields</code> hash of anything else you want associated with the badge (optional)</li>
+</ul>
+
+<h3 id="example">Example</h3>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="ruby"><span class="line"><span class="ss">Merit</span><span class="p">:</span><span class="ss">:Badge</span><span class="o">.</span><span class="n">create!</span><span class="p">(</span>
+</span><span class="line">  <span class="nb">id</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+</span><span class="line">  <span class="nb">name</span><span class="p">:</span> <span class="s1">&#39;첫 걸음마&#39;</span><span class="p">,</span>
+</span><span class="line">  <span class="ss">description</span><span class="p">:</span> <span class="s2">&quot;이제 막 포스팅을 시작한 유저&quot;</span><span class="p">,</span>
+</span><span class="line">  <span class="n">custom_fields</span><span class="p">:</span> <span class="p">{</span> <span class="ss">difficulty</span><span class="p">:</span> <span class="ss">:bronze</span><span class="p">,</span> <span class="n">image_url</span><span class="p">:</span> <span class="s1">&#39;http://dummyimage.com/100x100/965a38/fff&amp;text=&#39;</span> <span class="p">}</span>
+</span><span class="line"><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<ul>
+  <li><code>:image_url</code> 현재는 더미이미지 주소 경로를 위해 추가한 옵션이며 해시로 접근합니다. (더미이미지에 한글 생성이 안됩니다 ㅜㅜ) 디자이너 분이 뱃지 이미지를 만들어 주시면 이미지 서버 경로로 변경하면 되겠습니다.</li>
+</ul>
+
+<h2 id="defining-rules">Defining Rules</h2>
+
+<p>뱃지는 자동적으로 어플리케이션안에서 규칙과 조건에 의해 생성됩니다. 옵션에 의해 영구적 또는 일시적으로 뱃지를 소유할 수 있습니다.</p>
+
+<p>뱃지의 규칙 / 조건은 <code>app/models/merit/badge_rules.rb</code>안에 정의되어 있고 <code>grant_on</code> 블록 매개변수에 의해 호출 됩니다:</p>
+
+<ul>
+  <li><code>'controller#action'</code> a string similar to Rails routes</li>
+  <li><code>:badge</code> corresponds to the <code>:name</code> of the badge</li>
+  <li><code>:level</code> corresponds to the <code>:level</code> of the badge</li>
+  <li><code>:to</code> the object’s field to give the badge to. It needs a variable named
+<code>@model</code> in the associated controller action, like <code>@post</code> for
+<code>posts_controller.rb</code> or <code>@comment</code> for <code>comments_controller.rb</code>.
+    <ul>
+      <li>Can be a method name, which called over the target object should retrieve
+the object to badge. If it’s <code>:user</code> for example, merit will internally
+call <code>@model.user</code> to find who to badge.</li>
+      <li>Can be <code>:itself</code>, in which case it badges the target object itself
+(<code>@model</code>).</li>
+      <li>Is <code>:action_user</code> by default, which means <code>current_user</code>.</li>
+    </ul>
+  </li>
+  <li><code>:model_name</code> define the controller’s name if it’s different from
+the model’s (e.g. <code>RegistrationsController</code> for the <code>User</code> model).</li>
+  <li><code>:multiple</code> whether or not the badge may be granted multiple times. <code>false</code> by default.</li>
+  <li><code>:temporary</code> whether or not the badge should be revoked if the condition no
+longer holds. <code>false</code> -badges are kept for ever- by default.</li>
+  <li><code>&amp;block</code> can be one of the following:
+    <ul>
+      <li>empty / not included: always grant the badge</li>
+      <li>a block which evaluates to boolean. It recieves the target object as
+parameter (e.g. <code>@post</code> if you’re working with a PostsController action).</li>
+      <li>a block with a hash composed of methods to run on the target object and
+expected method return values</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="examples">Examples</h3>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="ruby"><span class="line"><span class="c1"># app/models/merit/badge_rules.rb</span>
+</span><span class="line"><span class="n">grant_on</span> <span class="s1">&#39;posts#create&#39;</span><span class="p">,</span> <span class="ss">badge</span><span class="p">:</span> <span class="s1">&#39;첫 걸음마&#39;</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="s1">&#39;Post&#39;</span> <span class="k">do</span> <span class="o">|</span><span class="n">post</span><span class="o">|</span>
+</span><span class="line">    <span class="n">post</span><span class="o">.</span><span class="n">writer</span><span class="o">.</span><span class="n">posts</span><span class="o">.</span><span class="n">count</span> <span class="o">==</span> <span class="mi">1</span>
+</span><span class="line"><span class="k">end</span>
+</span><span class="line">
+</span><span class="line"><span class="n">grant_on</span> <span class="s1">&#39;questions#create&#39;</span><span class="p">,</span> <span class="ss">badge</span><span class="p">:</span> <span class="s1">&#39;호기심이 많은&#39;</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="s1">&#39;Question&#39;</span> <span class="k">do</span> <span class="o">|</span><span class="n">question</span><span class="o">|</span>
+</span><span class="line">    <span class="n">question</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">questions</span><span class="o">.</span><span class="n">count</span> <span class="o">==</span> <span class="mi">10</span>
+</span><span class="line"><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h1 id="points">Points</h1>
+
+<h2 id="defining-rules-1">Defining Rules</h2>
+
+<p>포인트는 액션-트리거로 “meritable” 리소스에 전달합니다. <code>app/models/merit/point_rules.rb</code>에서 아래와 같이 규칙이 정의되어 있습니다:</p>
+
+<p><code>score</code> accepts:</p>
+
+<ul>
+  <li><code>score</code>
+    <ul>
+      <li><code>Integer</code></li>
+      <li><code>Proc</code>, or any object that accepts <code>call</code> which takes one argument, where
+the target_object is passed in and the return value is used as the score.</li>
+    </ul>
+  </li>
+  <li><code>:on</code> action as string or array of strings (similar to Rails routes)</li>
+  <li><code>:to</code> method(s) to send to the target_object (who should be scored?)</li>
+  <li><code>:model_name</code> (optional) to specify the model name if it cannot be guessed
+from the controller. (e.g. <code>model_name: 'User'</code> for <code>RegistrationsController</code>,
+or <code>model_name: 'Comment'</code> for <code>Api::CommentsController</code>)</li>
+  <li><code>:category</code> (optional) to categorize earned points. <code>default</code> is used by default.</li>
+  <li><code>&amp;block</code>
+    <ul>
+      <li>empty (always scores)</li>
+      <li>a block which evaluates to boolean (recieves target object as parameter)</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="examples-1">Examples</h3>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+</pre></td><td class="code"><pre><code class="ruby"><span class="line"><span class="c1"># app/models/merit/point_rules.rb</span>
+</span><span class="line"><span class="n">score</span> <span class="mi">10</span><span class="p">,</span> <span class="ss">to</span><span class="p">:</span> <span class="ss">:writer</span><span class="p">,</span> <span class="ss">on</span><span class="p">:</span> <span class="s1">&#39;posts#create&#39;</span> <span class="k">do</span> <span class="o">|</span><span class="n">post</span><span class="o">|</span>
+</span><span class="line">    <span class="n">post</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">present?</span>
+</span><span class="line"><span class="k">end</span>
+</span><span class="line">
+</span><span class="line"><span class="n">score</span> <span class="mi">5</span><span class="p">,</span> <span class="ss">to</span><span class="p">:</span> <span class="ss">:user</span><span class="p">,</span> <span class="ss">on</span><span class="p">:</span> <span class="s1">&#39;questions#create&#39;</span> <span class="k">do</span> <span class="o">|</span><span class="n">question</span><span class="o">|</span>
+</span><span class="line">    <span class="n">question</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">present?</span>
+</span><span class="line"><span class="k">end</span>
+</span><span class="line">
+</span><span class="line"><span class="n">score</span> <span class="mi">5</span><span class="p">,</span> <span class="ss">to</span><span class="p">:</span> <span class="ss">:user</span><span class="p">,</span> <span class="ss">on</span><span class="p">:</span> <span class="s1">&#39;answers#create&#39;</span> <span class="k">do</span> <span class="o">|</span><span class="n">answer</span><span class="o">|</span>
+</span><span class="line">    <span class="n">answer</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">present?</span>
+</span><span class="line"><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h1 id="rankings">Rankings</h1>
+
+<p>배지와 같이 구체적인 액션에 전달되지 않아 cron 작업으로 랭크가 적용이 되었는지 여부를 테스트 하기 위해 정의해야 합니다.</p>
+
+<h2 id="defining-rules-2">Defining Rules</h2>
+
+<p><code>app/models/merit/rank_rules.rb</code>에 정의되어 있습니다:</p>
+
+<p><code>set_rank</code> accepts:</p>
+
+<ul>
+  <li><code>:level</code> ranking level (greater is better, Lexicographical order)</li>
+  <li><code>:to</code> model or scope to check if new rankings apply</li>
+  <li><code>:level_name</code> attribute name (default is empty and results in
+‘<code>level</code>’ attribute, if set it’s appended like
+‘<code>level_#{level_name}</code>’)</li>
+</ul>
+
+<p>아래와 같이 백그라운드에서 rake task로 정의된 규칙을 체크합니다:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="ruby"><span class="line"><span class="n">task</span> <span class="ss">cron</span><span class="p">:</span> <span class="ss">:environment</span> <span class="k">do</span>
+</span><span class="line">  <span class="ss">Merit</span><span class="p">:</span><span class="ss">:RankRules</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">check_rank_rules</span>
+</span><span class="line"><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h3 id="examples-2">Examples</h3>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="ruby"><span class="line"><span class="n">set_rank</span> <span class="ss">:level</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="no">User</span> <span class="k">do</span> <span class="o">|</span><span class="n">user</span><span class="o">|</span>
+</span><span class="line">    <span class="n">user</span><span class="o">.</span><span class="n">points</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">user</span><span class="o">.</span><span class="n">points</span> <span class="o">&lt;=</span> <span class="mi">50</span>
+</span><span class="line"><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h1 id="uninstalling-merit">Uninstalling Merit</h1>
+
+<ol>
+  <li>Run <code>rails d merit:install</code></li>
+  <li>Run <code>rails d merit MODEL_NAME</code> (e.g. <code>user</code>)</li>
+  <li>Run <code>rails g merit:remove MODEL_NAME</code> (e.g. <code>user</code>)</li>
+  <li>Run <code>rake db:migrate</code></li>
+  <li>Remove <code>merit</code> from your Gemfile</li>
+</ol>
+
+<hr />
+
+<h1 id="rorla---">RORLa 프로젝트 설정 사항</h1>
+
+<ol>
+  <li>뱃지 규칙(badge_rules.rb 참고):
+    <ul>
+      <li>포스트 작성 개수에 따라 뱃지를 받습니다.</li>
+      <li>유저의 질문 개수에 따라 뱃지를 받습니다.</li>
+      <li>유저의 답변 개수에 따라 뱃지를 받습니다.</li>
+    </ul>
+  </li>
+  <li>포인트 규칙 (point_rules.rb 참고):
+    <ul>
+      <li>포스트 작성시 포인트 10 증가</li>
+      <li>질문 작성시 5 증가</li>
+      <li>답변 작성시 5 증가</li>
+    </ul>
+  </li>
+  <li>랭크(레벨) 규칙 (rank_rules.rb 참고):
+    <ul>
+      <li>레벨 1 -&gt; 유저의 point가 0이상 50이하 일때</li>
+      <li>레벨 2 -&gt; 유저의 point가 50초과 100이하 일때</li>
+      <li>레벨 3 -&gt; 유저의 point가 100초과 200이하 일때</li>
+    </ul>
+  </li>
+  <li>welcome 뷰에 유저 로그인시 보이는 Badge 레이아웃 추가(추후 유저 프로필 뷰로 이동 예정) (app/views/welcome/index.html.erb 참고)<br />
+    <ul>
+      <li>네비게이션 바에 레벨과 포인트 뷰 추가 (app/views/layouts/application.html.erb 수정) </li>
+    </ul>
+  </li>
+  <li>각 컨트롤러의 액션 실행시 레벨 체크를 위한 helper 추가(상의 후 cron job으로 변경 예정) (merit_helper.rb 참고):
+    <ul>
+      <li>application_controller.rb</li>
+      <li>posts_controller.rb</li>
+      <li>questions_controller.rb</li>
+      <li>welcome_controller.rb </li>
+    </ul>
+  </li>
+</ol>
+
+<p>해당 컨트롤러에 아래와 같은 코드 추가</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="ruby"><span class="line"><span class="kp">include</span> <span class="no">MeritHelper</span>
+</span><span class="line"><span class="n">before_action</span> <span class="ss">:resource_refresh</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>merit_helper.rb </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="ruby"><span class="line"><span class="c1">#app/helpers/merit_helper.rb</span>
+</span><span class="line"><span class="k">module</span> <span class="nn">MeritHelper</span>
+</span><span class="line">  <span class="k">def</span> <span class="nf">resource_refresh</span>
+</span><span class="line">    <span class="k">return</span> <span class="k">unless</span> <span class="p">(</span><span class="no">Rails</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">development?</span> <span class="o">||</span> <span class="no">Rails</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">test?</span><span class="p">)</span>
+</span><span class="line">    <span class="ss">Merit</span><span class="p">:</span><span class="ss">:RankRules</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">check_rank_rules</span>
+</span><span class="line">  <span class="k">end</span>
+</span><span class="line"><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -305,82 +616,6 @@ javascript에선 function 같은..</p>
 
 <p>4). 연계해서 사용가능하다.<br />
 ex) jquery 50 -&gt; jquery파일의 50라인으로 이동</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/08/01/%E1%84%83%E1%85%A1%E1%86%BC%E1%84%92%E1%85%AA%E1%86%BC%E1%84%92%E1%85%A1%E1%84%8C%E1%85%B5%E1%84%8B%E1%85%A1%E1%86%AD%E1%84%80%E1%85%A9-swift-number-1/">당황하지 않고 Swift #1</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-08-01T14:23:15+09:00" pubdate data-updated="true">Aug 1<span>st</span>, 2014</time>
-        
-         | <a href="/blog/2014/08/01/%E1%84%83%E1%85%A1%E1%86%BC%E1%84%92%E1%85%AA%E1%86%BC%E1%84%92%E1%85%A1%E1%84%8C%E1%85%B5%E1%84%8B%E1%85%A1%E1%86%AD%E1%84%80%E1%85%A9-swift-number-1/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content">
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/06/19/test-posting/">Test Posting</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-06-19T18:04:28+09:00" pubdate data-updated="true">Jun 19<span>th</span>, 2014</time>
-        
-         | <a href="/blog/2014/06/19/test-posting/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content">
 </div>
   
   

@@ -1,16 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
-        <loc>http://Majestin.github.io/blog/2014/06/19/test-posting/</loc>
-        <lastmod>2014-06-20T10:32:29+09:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://Majestin.github.io/blog/2014/08/01/%E1%84%83%E1%85%A1%E1%86%BC%E1%84%92%E1%85%AA%E1%86%BC%E1%84%92%E1%85%A1%E1%84%8C%E1%85%B5%E1%84%8B%E1%85%A1%E1%86%AD%E1%84%80%E1%85%A9-swift-number-1/
-        </loc>
-        <lastmod>2014-08-01T14:25:11+09:00</lastmod>
-    </url>
-    <url>
         <loc>http://Majestin.github.io/blog/2014/08/01/sublimetext-shortkeys-memo/</loc>
         <lastmod>2014-08-03T21:41:00+09:00</lastmod>
     </url>
@@ -21,16 +11,20 @@
         <lastmod>2014-08-09T15:31:25+09:00</lastmod>
     </url>
     <url>
+        <loc>http://Majestin.github.io/blog/2014/09/11/merit-gem-example/</loc>
+        <lastmod>2014-09-15T14:29:01+09:00</lastmod>
+    </url>
+    <url>
         <loc>http://Majestin.github.io/about/</loc>
-        <lastmod>2014-08-01T20:33:28+09:00</lastmod>
+        <lastmod>2014-09-11T18:50:00+09:00</lastmod>
     </url>
     <url>
         <loc>http://Majestin.github.io/blog/archives/</loc>
-        <lastmod>2014-08-09T15:31:25+09:00</lastmod>
+        <lastmod>2014-09-15T14:29:01+09:00</lastmod>
     </url>
     <url>
         <loc>http://Majestin.github.io/</loc>
-        <lastmod>2014-08-09T15:31:25+09:00</lastmod>
+        <lastmod>2014-09-15T14:29:01+09:00</lastmod>
     </url>
     <url>
         <loc>http://Majestin.github.io/robots.txt</loc>
